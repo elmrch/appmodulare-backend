@@ -1,4 +1,10 @@
 package com.appmodulare.excepction;
 
-public record CustomErrorRecord() {
+import java.time.LocalDateTime;
+
+public record CustomErrorRecord(
+        LocalDateTime dateTime,
+        String message,
+        String details
+) {
 }

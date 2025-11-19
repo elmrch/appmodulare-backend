@@ -1,5 +1,6 @@
 package com.appmodulare.service.Impl;
 
+import com.appmodulare.excepction.ModelNotFoundException;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.ICRUD;
 
@@ -25,7 +26,7 @@ public abstract class CRUDImpl<T,ID> implements ICRUD<T,ID> {
 
     @Override
     public T findById(ID id) throws Exception {
-        return getRepo().findById(id).orElse(null);
+        return getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("IN NOT FOUND: " + id));
     }
 
     @Override

@@ -24,6 +24,7 @@ public class Schedule {
     @Column(name = "end_time")
     private LocalTime endTime;
 
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

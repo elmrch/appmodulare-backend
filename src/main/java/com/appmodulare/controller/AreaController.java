@@ -1,9 +1,17 @@
 package com.appmodulare.controller;
 
 
+import com.appmodulare.dto.AreaDTO;
 import com.appmodulare.model.Area;
 import com.appmodulare.service.IAreaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.EntityModel;
+
+import  static  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,36 +23,40 @@ import java.util.List;
 public class AreaController {
 
     private final IAreaService service;
+    private final ModelMapper modelMapper;
 
 
     @GetMapping
-    public ResponseEntity<List<Area>>findAll() throws Exception{
+    public ResponseEntity<List<AreaDTO>>findAll() throws Exception{
+        //ModelMapper modelMapper = new ModelMapper();
 
-        List<Area>list= service.findAll();
+        List<AreaDTO>list= service.findAll().stream()
+                .map(this::convertToDto).toList();
+
         return  ResponseEntity.ok().body(list);
 
     }
     @GetMapping("{id}")
-    public ResponseEntity<Area>findById( @PathVariable("id") Integer id) throws Exception{
+    public ResponseEntity<AreaDTO>findById( @PathVariable("id") Integer id) throws Exception{
 
-        Area list= service.findById(id);
+        AreaDTO list= convertToDto(service.findById(id));
         return  ResponseEntity.ok().body(list);
 
     }
 
     @PostMapping
-    public ResponseEntity<Area> create (@RequestBody Area area) throws Exception{
+    public ResponseEntity<Area> create (@Valid @RequestBody AreaDTO dto) throws Exception{
 
-        Area obj = service.save(area);
+        Area obj = service.save(convertToEntity(dto));
 
         return ResponseEntity.ok().body(obj);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Area> update(@RequestBody Area area, @PathVariable("id") Integer id) throws Exception{
-        Area obje = service.update(area ,id);
+    public ResponseEntity<AreaDTO> update( @Valid @RequestBody AreaDTO dto, @PathVariable("id") Integer id) throws Exception{
+        Area obje = service.update(convertToEntity(dto),id);
 
-        return ResponseEntity.ok().body(obje);
+        return ResponseEntity.ok().body(convertToDto(obje));
 
     }
 
@@ -53,5 +65,34 @@ public class AreaController {
         service.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/hateoas/{id}")
+
+    public EntityModel<AreaDTO> findByIdHateoas(@PathVariable("id") Integer id) throws Exception {
+
+        Area obj = service.findById(id);
+
+        EntityModel<AreaDTO> resource = EntityModel.of(convertToDto(obj));
+        //generar link informativo
+
+        WebMvcLinkBuilder link1= linkTo(methodOn(AreaController.class).findById(obj.getId()));
+        WebMvcLinkBuilder link2= linkTo(methodOn(AreaController.class).findAll());
+
+        resource.add(link1.withRel("area-self-info"));
+
+        resource.add(link2.withRel("all-patients"));
+        return resource;
+
+
+    }
+    public  Area convertToEntity(AreaDTO dto){
+        return modelMapper.map(dto,Area.class);
+
+    }
+
+    public  AreaDTO convertToDto(Area entity){
+        return modelMapper.map(entity,AreaDTO.class);
+
     }
 }
