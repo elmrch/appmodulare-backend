@@ -38,8 +38,8 @@ public class Employee {
     @Column(name = "hire_date")
     private LocalDate hireDate;
 
-    @Column(name = "area_id")
-    private Integer areaId;
+  /*  @Column(name = "area_id")
+    private Integer areaId;*/
 
     @Column(length = 100)
     private String position;
@@ -47,8 +47,8 @@ public class Employee {
     @Column(precision = 10, scale = 2)
     private BigDecimal salary;
 
-    @Column(name = "schedule_id")
-    private Integer scheduleId;
+   /* @Column(name = "schedule_id")
+    private Integer scheduleId;*/
 
     @Column(name = "photo_url", length = 255)
     private String photoUrl;
@@ -60,11 +60,11 @@ public class Employee {
     private LocalDateTime updatedAt;
 
     @ManyToOne
-    @JoinColumn(name = "area_id", insertable = false, updatable = false)
+    @JoinColumn(name = "area_id")
     private Area area;
 
     @ManyToOne
-    @JoinColumn(name = "schedule_id", insertable = false, updatable = false)
+    @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 
     @PrePersist

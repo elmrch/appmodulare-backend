@@ -39,7 +39,7 @@ public class AreaController {
     @GetMapping("{id}")
     public ResponseEntity<AreaDTO>findById( @PathVariable("id") Integer id) throws Exception{
 
-        AreaDTO list= convertToDto(service.findById(id));
+        AreaDTO list= convertToDto(service.findById(id).getArea());
         return  ResponseEntity.ok().body(list);
 
     }
@@ -71,7 +71,7 @@ public class AreaController {
 
     public EntityModel<AreaDTO> findByIdHateoas(@PathVariable("id") Integer id) throws Exception {
 
-        Area obj = service.findById(id);
+        Area obj = service.findById(id).getArea();
 
         EntityModel<AreaDTO> resource = EntityModel.of(convertToDto(obj));
         //generar link informativo

@@ -41,7 +41,7 @@ public class ScheduleController {
     @GetMapping("{id}")
     public ResponseEntity<ScheduleDTO>findById(@PathVariable("id") Integer id) throws Exception{
 
-        ScheduleDTO list= convertToDto(service.findById(id));
+        ScheduleDTO list= convertToDto(service.findById(id).getSchedule());
         return  ResponseEntity.ok().body(list);
 
     }
@@ -68,7 +68,7 @@ public class ScheduleController {
 
     public EntityModel<ScheduleDTO> findByIdHateoas(@PathVariable("id") Integer id) throws Exception {
 
-        Schedule obj = service.findById(id);
+        Schedule obj = service.findById(id).getSchedule();
 
         EntityModel<ScheduleDTO> resource = EntityModel.of(convertToDto(obj));
         //generar link informativo
