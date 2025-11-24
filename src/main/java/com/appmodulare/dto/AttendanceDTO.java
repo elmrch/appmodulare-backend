@@ -24,6 +24,10 @@ public class AttendanceDTO {
     private String checkOut;    // LocalDateTime -> String
 
     private Double totalHours;
+    private String totalHoursFormatted;  // <-- ¿ESTÁ INCLUIDO?
+
+
+
     private String status;
     // PUNTUAL / TARDE
 }

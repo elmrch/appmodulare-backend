@@ -1,15 +1,16 @@
 package com.appmodulare.service.Impl;
 
 import com.appmodulare.excepction.ModelNotFoundException;
-import com.appmodulare.model.Employee;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.ICRUD;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
-public abstract class CRUDImpl<T,ID> implements ICRUD<T,ID> {
+public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
 
-    protected abstract IGenericRepo<T,ID> getRepo();
+    protected abstract IGenericRepo<T, ID> getRepo();
+
     @Override
     public T save(T t) throws Exception {
         return getRepo().save(t);
@@ -17,7 +18,15 @@ public abstract class CRUDImpl<T,ID> implements ICRUD<T,ID> {
 
     @Override
     public T update(T t, ID id) throws Exception {
-        return getRepo().save(t);
+
+        // 1. Buscar registro existente
+        T existing = this.findById(id);
+
+        // 2. Copiar campos del nuevo al existente (sin cambiar el ID)
+        BeanUtils.copyProperties(t, existing, "id");
+
+        // 3. Actualizar
+        return getRepo().save(existing);
     }
 
     @Override
@@ -26,13 +35,13 @@ public abstract class CRUDImpl<T,ID> implements ICRUD<T,ID> {
     }
 
     @Override
-    public Employee findById(ID id) throws Exception {
-        return (Employee) getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("IN NOT FOUND: " + id));
+    public T findById(ID id) throws Exception {
+        return getRepo().findById(id)
+                .orElseThrow(() -> new ModelNotFoundException("ID NOT FOUND: " + id));
     }
 
     @Override
     public void delete(ID id) throws Exception {
         getRepo().deleteById(id);
-
     }
 }

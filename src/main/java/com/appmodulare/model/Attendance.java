@@ -34,7 +34,8 @@ public class Attendance {
 
     @Column(name = "total_hours")
     private Double totalHours;
-
+    @Column(name = "total_hours_formatted", length = 20)
+    private String totalHoursFormatted;
     @Column(length = 20)
     private String status; // PUNTUAL / TARDE
 
