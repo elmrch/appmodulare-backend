@@ -5,6 +5,8 @@ import com.appmodulare.repositorie.IAreaRepository;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.IAreaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public class AreaServiceImpl extends CRUDImpl<Area,Integer> implements IAreaServ
     protected IGenericRepo<Area, Integer> getRepo() {
         return iAreaRepository;
     }
+
+
 }

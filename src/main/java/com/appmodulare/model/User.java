@@ -2,15 +2,17 @@ package com.appmodulare.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User {
-    @Id
+   /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -26,7 +28,7 @@ public class User {
     @Column(length = 20)
     private String role;
 
-    @Column(name = "photo_url", length = 255)
+   @Column(name = "photo_url", length = 255)
     private String photoUrl;
 
     @Column(name = "created_at")
@@ -45,5 +47,25 @@ public class User {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
+    }*/
+   @Id
+   @EqualsAndHashCode.Include
+   private Integer idUser;
+
+    @Column(nullable = false, length = 60, unique = true)
+    private String username;
+
+    @Column(nullable = false, length = 60) //12345678 Bcrypt hash
+    private String password;
+
+    @Column(nullable = false)
+    private boolean enabled;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "idUser"),
+            inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "idRole")
+    )
+    private List<Role> roles;
+
 }
