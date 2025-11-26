@@ -47,11 +47,6 @@ public class Attendance {
         if (date == null) {
             date = LocalDate.now();
         }
-
-        if (checkIn != null && status == null) {
-            // Consideramos horario puntual antes de las 09:00
-            status = checkIn.toLocalTime().isBefore(LocalTime.of(9, 0)) ? "PUNTUAL" : "TARDE";
-        }
     }
 
 }

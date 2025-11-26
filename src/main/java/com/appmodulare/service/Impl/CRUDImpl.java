@@ -4,6 +4,8 @@ import com.appmodulare.excepction.ModelNotFoundException;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.ICRUD;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
@@ -44,4 +46,6 @@ public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     public void delete(ID id) throws Exception {
         getRepo().deleteById(id);
     }
+
+
 }

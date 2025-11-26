@@ -2,16 +2,21 @@ package com.appmodulare.service.Impl;
 
 import com.appmodulare.model.Attendance;
 import com.appmodulare.model.Employee;
+import com.appmodulare.model.Schedule;
 import com.appmodulare.repositorie.IAttendanceRepo;
 import com.appmodulare.repositorie.IEmployeeRepo;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.IAttendanceService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAttendanceService {
@@ -33,31 +38,38 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
             throw new Exception("El DNI ingresado no existe.");
         }
 
-        Attendance today = repo.findByEmployeeAndDate(
-                emp.getId(),
-                LocalDateTime.now().toLocalDate()
-        );
-
-        // Validación: ya registró entrada
-        if (today != null && today.getCheckIn() != null) {
-            throw new Exception("Ya registró su entrada hoy. No puede registrar dos veces.");
+        Schedule schedule = emp.getSchedule();
+        if (schedule == null) {
+            throw new Exception("El empleado no tiene un horario asignado.");
         }
 
-        // Crear si no existe
+        Attendance today = repo.findByEmployeeAndDate(
+                emp.getId(),
+                LocalDate.now()
+        );
+
+        if (today != null && today.getCheckIn() != null) {
+            throw new Exception("Ya registró su entrada hoy.");
+        }
+
         if (today == null) {
             today = new Attendance();
             today.setEmployee(emp);
-            today.setDate(LocalDateTime.now().toLocalDate());
+            today.setDate(LocalDate.now());
         }
 
         LocalDateTime now = LocalDateTime.now();
         today.setCheckIn(now);
 
-        // ======= CÁLCULO DE ESTADO (PUNTUAL / TARDE) =======
-        LocalDateTime horaEntrada = now.toLocalDate().atTime(8, 30);
-        LocalDateTime toleranciaMaxima = horaEntrada.plusMinutes(15); // 08:45 AM
+        // ==============================
+        // CÁLCULO DE PUNTUALIDAD DINÁMICA
+        // ==============================
+        LocalTime horaInicio = schedule.getStartTime();
+        LocalDateTime horaEntrada = now.toLocalDate().atTime(horaInicio);
 
-        if (now.isBefore(toleranciaMaxima) || now.isEqual(toleranciaMaxima)) {
+        LocalDateTime toleranciaMax = horaEntrada.plusMinutes(15);
+
+        if (now.isBefore(toleranciaMax) || now.isEqual(toleranciaMax)) {
             today.setStatus("PUNTUAL");
         } else {
             today.setStatus("TARDE");
@@ -78,7 +90,7 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
         Attendance today = repo.findByEmployeeAndDate(
                 emp.getId(),
-                LocalDateTime.now().toLocalDate()
+                LocalDate.now()
         );
 
         if (today == null || today.getCheckIn() == null) {
@@ -86,12 +98,14 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
         }
 
         if (today.getCheckOut() != null) {
-            throw new Exception("Ya registró su salida hoy. No puede registrar dos veces.");
+            throw new Exception("Ya registró su salida hoy.");
         }
 
         today.setCheckOut(LocalDateTime.now());
 
-// Calcular horas trabajadas SOLO si checkIn y checkOut no son null
+        // =============================
+        // CÁLCULO DE HORAS TRABAJADAS
+        // =============================
         if (today.getCheckIn() != null && today.getCheckOut() != null) {
 
             Duration duration = Duration.between(
@@ -99,7 +113,6 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
                     today.getCheckOut()
             );
 
-            // *** FORMATO HH:mm:ss ***
             long hours = duration.toHours();
             long minutes = duration.toMinutesPart();
             long seconds = duration.toSecondsPart();
@@ -107,20 +120,17 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
             String formatted = String.format("%02d:%02d:%02d", hours, minutes, seconds);
             today.setTotalHoursFormatted(formatted);
 
-            // *** FORMATO DECIMAL ***
             double hoursDecimal = duration.toSeconds() / 3600.0;
             hoursDecimal = Math.round(hoursDecimal * 100.0) / 100.0;
 
             today.setTotalHours(hoursDecimal);
-
-        } else {
-            today.setTotalHours(0.0);
-            today.setTotalHoursFormatted("00:00:00");
         }
 
         return repo.save(today);
     }
 
+
+    // ========================== LISTA CON JOINS =============================
     @Override
     public List<Attendance> findAll() {
         return repo.findAllWithEmployee();

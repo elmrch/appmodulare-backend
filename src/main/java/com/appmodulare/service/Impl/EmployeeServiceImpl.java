@@ -9,6 +9,8 @@ import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.repositorie.IScheduleRepo;
 import com.appmodulare.service.IEmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +25,7 @@ public class EmployeeServiceImpl extends CRUDImpl<Employee, Integer> implements 
     protected IGenericRepo<Employee, Integer> getRepo() {
         return repo;
     }
+
 
 
 }
