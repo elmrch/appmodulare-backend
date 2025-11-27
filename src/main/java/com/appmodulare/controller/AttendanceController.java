@@ -74,6 +74,7 @@ public class AttendanceController {
         dto.setCheckOut(att.getCheckOut() != null ? att.getCheckOut().toString() : null);
 
         dto.setTotalHours(att.getTotalHours());
+        dto.setTotalHoursFormatted(att.getTotalHoursFormatted());
         dto.setStatus(att.getStatus());
 
         return dto;
