@@ -1,6 +1,7 @@
 package com.appmodulare.service.Impl;
 
 import com.appmodulare.excepction.ModelNotFoundException;
+import com.appmodulare.model.Visit;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.ICRUD;
 import org.springframework.beans.BeanUtils;
@@ -48,4 +49,7 @@ public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     }
 
 
+    /*public abstract Visit registerCheckIn(Visit visit) throws Exception;
+
+    public abstract Visit registerCheckOut(Integer id) throws Exception;*/
 }
