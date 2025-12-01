@@ -25,7 +25,7 @@ public class Schedule {
     private LocalTime endTime;
 
 
-    @Column(name = "created_at")
+    @Column(name = "created_at" , updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")

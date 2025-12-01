@@ -53,7 +53,7 @@ public class Employee {
     @Column(name = "photo_url", length = 255)
     private String photoUrl;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at" , updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
