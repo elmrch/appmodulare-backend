@@ -7,6 +7,7 @@ import com.appmodulare.service.IReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Map;
 public class ReportController {
 
     private final IReportService reportService;
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     /**
      * POST /api/reports/attendance
      * Genera reporte de asistencias con filtros

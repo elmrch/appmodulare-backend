@@ -5,6 +5,7 @@ import com.appmodulare.service.IAbsenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class AbsenceController {
      * POST /api/absences
      * Obtiene lista de ausencias (días sin marcar)
      */
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<Map<String, Object>> getAbsences(
             @RequestBody AbsenceFilterDTO filter) {

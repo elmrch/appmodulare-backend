@@ -8,13 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Role {
+public class Role  {
 
     @Id
     @EqualsAndHashCode.Include
@@ -25,4 +26,6 @@ public class Role {
 
     @Column(nullable = false, length = 150)
     private String description;
+
+
 }
