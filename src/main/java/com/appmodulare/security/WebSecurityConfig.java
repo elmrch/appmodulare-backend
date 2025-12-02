@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/attendances/check-in").permitAll()
                             .requestMatchers("/attendances/check-out").permitAll()
                             .requestMatchers("/auth/login").permitAll()
+
                             .anyRequest().authenticated()
                     )
                     .formLogin(AbstractHttpConfigurer::disable)

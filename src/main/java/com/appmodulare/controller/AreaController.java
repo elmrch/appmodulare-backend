@@ -13,6 +13,7 @@ import  static  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class AreaController {
     private final IAreaService service;
     private final ModelMapper modelMapper;
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<AreaDTO>>findAll() throws Exception{
         //ModelMapper modelMapper = new ModelMapper();

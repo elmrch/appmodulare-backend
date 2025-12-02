@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,7 +27,7 @@ public class EmployeeController {
     private final IEmployeeService service;
     private final ModelMapper modelMapper;
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> findAll() throws Exception{
         //ModelMapper modelMapper = new ModelMapper();

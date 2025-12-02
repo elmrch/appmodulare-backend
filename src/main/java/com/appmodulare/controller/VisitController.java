@@ -9,6 +9,7 @@ import com.appmodulare.service.IVisitService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class VisitController {
     private final IVisitService service;
     private final ModelMapper modelMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 
     @GetMapping
     public ResponseEntity<List<VisitDTO>> findAll() throws Exception{

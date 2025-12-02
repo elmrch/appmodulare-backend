@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class ScheduleController {
     private final IScheduleService service;
     private final ModelMapper modelMapper;
 
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     // GET todos los horarios
     @GetMapping
     public ResponseEntity<List<ScheduleDTO>> findAll() throws Exception{

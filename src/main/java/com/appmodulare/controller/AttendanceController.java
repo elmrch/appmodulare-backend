@@ -9,6 +9,7 @@ import com.appmodulare.service.IAttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class AttendanceController {
     private final IAttendanceService service;
     private final ModelMapper modelMapper;
 
+
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
 
     @GetMapping
     public ResponseEntity<List<AttendanceDTO>>findAll() throws Exception{
