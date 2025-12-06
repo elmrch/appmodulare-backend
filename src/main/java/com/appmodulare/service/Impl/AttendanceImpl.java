@@ -24,6 +24,13 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
     private final IAttendanceRepo repo;
     private final IEmployeeRepo employeeRepo;
 
+
+    // Coordenadas de tu oficina en Arequipa
+    private static final double OFFICE_LAT = -16.386062;
+ /*   -16.38633650612929, -71.51364876615429*/
+    private static final double OFFICE_LON = -71.513978;
+    private static final double MAX_DISTANCE = 100.0; // 100 metros
+
     @Override
     protected IGenericRepo<Attendance, Integer> getRepo() {
         return repo;
@@ -31,7 +38,7 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
     // ========================== CHECK-IN =============================
     @Override
-    public Attendance registerCheckIn(String dni) throws Exception {
+    public Attendance registerCheckIn(String dni, Double latitude, Double longitude, String location) throws Exception {
 
         Employee emp = employeeRepo.findByDni(dni);
         if (emp == null) {
@@ -61,14 +68,20 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
         LocalDateTime now = LocalDateTime.now();
         today.setCheckIn(now);
 
-        // ==============================
-        // CÁLCULO DE PUNTUALIDAD DINÁMICA
-        // ==============================
+        // ========== GUARDAR GPS ==========
+        today.setCheckInLatitude(latitude);
+        today.setCheckInLongitude(longitude);
+        today.setCheckInLocation(location);
+
+        // ========== VALIDAR UBICACIÓN (SOLO CALCULA DISTANCIA) ==========
+        today.validateLocation(OFFICE_LAT, OFFICE_LON, MAX_DISTANCE);
+
+        // ========== PUNTUALIDAD (SIEMPRE SE APLICA) ==========
         LocalTime horaInicio = schedule.getStartTime();
         LocalDateTime horaEntrada = now.toLocalDate().atTime(horaInicio);
-
         LocalDateTime toleranciaMax = horaEntrada.plusMinutes(15);
 
+        // SOLO EVALÚA PUNTUALIDAD, IGNORA GPS PARA EL STATUS
         if (now.isBefore(toleranciaMax) || now.isEqual(toleranciaMax)) {
             today.setStatus("PUNTUAL");
         } else {
@@ -77,11 +90,9 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
         return repo.save(today);
     }
-
-
     // ========================== CHECK-OUT =============================
     @Override
-    public Attendance registerCheckOut(String dni) throws Exception {
+    public Attendance registerCheckOut(String dni, Double latitude, Double longitude, String location) throws Exception {
 
         Employee emp = employeeRepo.findByDni(dni);
         if (emp == null) {
@@ -103,11 +114,13 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
         today.setCheckOut(LocalDateTime.now());
 
-        // =============================
-        // CÁLCULO DE HORAS TRABAJADAS
-        // =============================
-        if (today.getCheckIn() != null && today.getCheckOut() != null) {
+        // ========== GUARDAR GPS DE SALIDA ==========
+        today.setCheckOutLatitude(latitude);
+        today.setCheckOutLongitude(longitude);
+        today.setCheckOutLocation(location);
 
+        // ========== CÁLCULO DE HORAS ==========
+        if (today.getCheckIn() != null && today.getCheckOut() != null) {
             Duration duration = Duration.between(
                     today.getCheckIn(),
                     today.getCheckOut()
@@ -128,8 +141,6 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
         return repo.save(today);
     }
-
-
     // ========================== LISTA CON JOINS =============================
     @Override
     public List<Attendance> findAll() {

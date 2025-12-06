@@ -1,8 +1,6 @@
 package com.appmodulare.controller;
 
-import com.appmodulare.dto.EmployeeDTO;
 import com.appmodulare.dto.SecurityIncidentDTO;
-import com.appmodulare.model.Employee;
 import com.appmodulare.model.SecurityIncident;
 import com.appmodulare.service.ISecurityIncidentService;
 import jakarta.validation.Valid;
@@ -56,7 +54,7 @@ public class SecurityIncidentController {
         return ResponseEntity.noContent().build();
     }
 
-    public SecurityIncident convertToEntity(SecurityIncidentDTO dto){
+   /* public SecurityIncident convertToEntity(SecurityIncidentDTO dto){
         return modelMapper.map(dto,SecurityIncident.class);
 
     }
@@ -65,7 +63,7 @@ public class SecurityIncidentController {
         SecurityIncidentDTO dto = new SecurityIncidentDTO();
 
         dto.setId(Long.valueOf(securityIncident.getId()));
-        dto.setDateTime(securityIncident.getDateTime());
+       dto.setDateTime(securityIncident.getDateTime());
         dto.setSeverity(securityIncident.getSeverity().toString()); // Enum → String
         dto.setIncident(securityIncident.getIncident());
         dto.setTitle(securityIncident.getTitle());
@@ -74,6 +72,15 @@ public class SecurityIncidentController {
 
         return dto;
     }
+*/
+   public  SecurityIncident convertToEntity(SecurityIncidentDTO dto){
+       return modelMapper.map(dto,SecurityIncident.class);
 
+   }
+
+    public  SecurityIncidentDTO convertToDto(SecurityIncident entity){
+        return modelMapper.map(entity,SecurityIncidentDTO.class);
+
+    }
 
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class
-AppmodulareApplication {
+        AppmodulareApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppmodulareApplication.class, args);

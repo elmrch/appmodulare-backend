@@ -1,6 +1,5 @@
 package com.appmodulare.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +23,21 @@ public class AttendanceDTO {
     private String checkOut;    // LocalDateTime -> String
 
     private Double totalHours;
-    private String totalHoursFormatted;  // <-- ¿ESTÁ INCLUIDO?
+    private String totalHoursFormatted;
 
+    private String status;      // PUNTUAL / TARDE / FUERA_DE_UBICACION
 
+    // ========== GPS CHECK-IN ==========
+    private Double checkInLatitude;
+    private Double checkInLongitude;
+    private String checkInLocation;
 
-    private String status;
-    // PUNTUAL / TARDE
+    // ========== GPS CHECK-OUT ==========
+    private Double checkOutLatitude;
+    private Double checkOutLongitude;
+    private String checkOutLocation;
+
+    // ========== VALIDACIÓN ==========
+    private Boolean locationValid;
+    private Double distanceFromOffice;  // Distancia en metros
 }
