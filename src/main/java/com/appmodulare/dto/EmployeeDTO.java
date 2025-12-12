@@ -23,12 +23,8 @@ public class EmployeeDTO {
         private String position;
         private Double salary;
         private String photoUrl;
-
-        // Para CREAR/ACTUALIZAR - solo envías el ID
         private Integer areaId;
         private Integer scheduleId;
-
-        // Para RESPUESTAS - devuelves el objeto completo (solo lectura)
         private AreaDTO area;
         private ScheduleDTO schedule;
 

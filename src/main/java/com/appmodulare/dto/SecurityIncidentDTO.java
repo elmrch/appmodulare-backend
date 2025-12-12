@@ -17,5 +17,8 @@ public class SecurityIncidentDTO {
     private String incident;
     private String reportedBy;
     private String title;
-   /* private String providerName;*/
+    private String fullName;
+
+
+    /* private String providerName;*/
 }

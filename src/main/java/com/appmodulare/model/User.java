@@ -49,8 +49,12 @@ public class User {
         updatedAt = LocalDateTime.now();
     }*/
    @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    @EqualsAndHashCode.Include
    private Integer idUser;
+
+    @Column(name = "full_name", length = 150) // ✅ AGREGAR
+    private String fullName;
 
     @Column(nullable = false, length = 60, unique = true)
     private String username;
@@ -60,12 +64,21 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled;
+    @Column(name = "photo_url", length = 255) // ✅ AGREGAR
+    private String photoUrl;
+    @Column(name = "created_at", updatable = false) // ✅ AGREGAR
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at") // ✅ AGREGAR
+    private LocalDateTime updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "idRole")
     )
+
     private List<Role> roles;
+
 
 }

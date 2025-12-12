@@ -19,7 +19,7 @@ public class SecurityIncident {
 
     private String title;
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "date_time")
     private LocalDateTime dateTime;
 
     @Column(nullable = false)

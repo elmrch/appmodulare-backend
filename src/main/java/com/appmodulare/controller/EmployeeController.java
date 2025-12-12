@@ -14,6 +14,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -52,11 +53,24 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<Employee> create (@Valid @RequestBody EmployeeDTO dto) throws Exception{
         Employee obj = service.save(convertToEntity(dto));
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+       /* URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();*/
 
 
 
         return ResponseEntity.ok().body(obj);
+    }
+    @PostMapping("/{id}/photo")
+    public ResponseEntity<EmployeeDTO> uploadPhoto(
+            @PathVariable("id") Integer id,
+            @RequestParam("photo") MultipartFile photo) throws Exception {
+
+        Employee employee = service.updatePhoto(id, photo);
+
+        EmployeeDTO dto = convertToDto(employee);
+
+        dto.setPhotoUrl(employee.getPhotoUrl());
+
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/{id}")

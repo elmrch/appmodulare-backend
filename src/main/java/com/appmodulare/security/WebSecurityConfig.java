@@ -53,6 +53,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/login").permitAll()
                             .requestMatchers("/mail/**").authenticated()
                             .requestMatchers("/attendances/check-in").permitAll()
+                            .requestMatchers("/uploads/**").permitAll()
                             .requestMatchers("/attendances/check-out").permitAll()
                             .requestMatchers("/auth/login").permitAll()
 
