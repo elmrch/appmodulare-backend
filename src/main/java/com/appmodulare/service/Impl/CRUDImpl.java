@@ -1,12 +1,15 @@
 package com.appmodulare.service.Impl;
 
+import com.appmodulare.dto.UserRegistrationDTO;
 import com.appmodulare.excepction.ModelNotFoundException;
+import com.appmodulare.model.User;
 import com.appmodulare.model.Visit;
 import com.appmodulare.repositorie.IGenericRepo;
 import com.appmodulare.service.ICRUD;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,13 +25,10 @@ public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     @Override
     public T update(T t, ID id) throws Exception {
 
-        // 1. Buscar registro existente
         T existing = this.findById(id);
 
-        // 2. Copiar campos del nuevo al existente (sin cambiar el ID)
         BeanUtils.copyProperties(t, existing, "id");
 
-        // 3. Actualizar
         return getRepo().save(existing);
     }
 
@@ -47,6 +47,7 @@ public abstract class CRUDImpl<T, ID> implements ICRUD<T, ID> {
     public void delete(ID id) throws Exception {
         getRepo().deleteById(id);
     }
+
 
 
     /*public abstract Visit registerCheckIn(Visit visit) throws Exception;

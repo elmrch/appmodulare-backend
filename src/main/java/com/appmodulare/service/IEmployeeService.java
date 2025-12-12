@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface IEmployeeService extends ICRUD<Employee,Integer>{
 
+    Employee updatePhoto(Integer id, MultipartFile photo) throws Exception;
+
+
 
 
 }
