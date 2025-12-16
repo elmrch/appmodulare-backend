@@ -46,7 +46,11 @@ public class Employee {
 
     @Column(precision = 10, scale = 2)
     private BigDecimal salary;
+    @Column(name = "qr_code", length = 255, unique = true)
+    private String qrCode;
 
+    @Column(name = "qr_enabled")
+    private Boolean qrEnabled = false;
    /* @Column(name = "schedule_id")
     private Integer scheduleId;*/
 

@@ -38,12 +38,11 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
     // ========================== CHECK-IN =============================
     @Override
-    public Attendance registerCheckIn(String dni, Double latitude, Double longitude, String location) throws Exception {
+    public Attendance registerCheckIn(String identifier, Double latitude, Double longitude, String location) throws Exception {
 
-        Employee emp = employeeRepo.findByDni(dni);
-        if (emp == null) {
-            throw new Exception("El DNI ingresado no existe.");
-        }
+        Employee emp = employeeRepo.findByDniOrQrCode(identifier, identifier)
+                .orElseThrow(() -> new Exception("Empleado no encontrado con DNI/QR: " + identifier));
+
 
         Schedule schedule = emp.getSchedule();
         if (schedule == null) {
@@ -92,12 +91,12 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
     }
     // ========================== CHECK-OUT =============================
     @Override
-    public Attendance registerCheckOut(String dni, Double latitude, Double longitude, String location) throws Exception {
+    public Attendance registerCheckOut(String identifier, Double latitude, Double longitude, String location) throws Exception {
 
-        Employee emp = employeeRepo.findByDni(dni);
-        if (emp == null) {
-            throw new Exception("El DNI ingresado no existe.");
-        }
+        // ✅ BUSCAR POR DNI O QR
+        Employee emp = employeeRepo.findByDniOrQrCode(identifier, identifier)
+                .orElseThrow(() -> new Exception("Empleado no encontrado con DNI/QR: " + identifier));
+
 
         Attendance today = repo.findByEmployeeAndDate(
                 emp.getId(),

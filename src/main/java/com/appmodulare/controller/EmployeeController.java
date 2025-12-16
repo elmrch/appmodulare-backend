@@ -87,6 +87,26 @@ public class EmployeeController {
 
         return ResponseEntity.noContent().build();
     }
+    // Generar código QR para un empleado
+    @PostMapping("/{id}/generate-qr")
+    public ResponseEntity<String> generateQrCode(@PathVariable("id") Integer id) throws Exception {
+        String qrCode = service.generateQrCode(id);
+        return ResponseEntity.ok(qrCode);
+    }
+
+    // Buscar empleado por código QR
+    @GetMapping("/qr/{qrCode}")
+    public ResponseEntity<EmployeeDTO> findByQrCode(@PathVariable("qrCode") String qrCode) throws Exception {
+        Employee employee = service.findByQrCode(qrCode);
+        return ResponseEntity.ok(convertToDto(employee));
+    }
+
+    // Buscar empleado por DNI o QR (útil para el registro de asistencia)
+    @GetMapping("/search/{identifier}")
+    public ResponseEntity<EmployeeDTO> findByDniOrQr(@PathVariable("identifier") String identifier) throws Exception {
+        Employee employee = service.findByDniOrQrCode(identifier);
+        return ResponseEntity.ok(convertToDto(employee));
+    }
 
     /*@GetMapping("/hateoas/{id}")
 

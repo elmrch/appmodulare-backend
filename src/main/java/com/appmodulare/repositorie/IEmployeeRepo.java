@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface IEmployeeRepo extends  IGenericRepo<Employee,Integer> {
     Employee findByDni(String dni);   // <-- AGREGA ESTE MÉTODO
-
+    Optional<Employee> findByQrCode(String qrCode);
+    Optional<Employee> findByDniOrQrCode(String dni, String qrCode);
 
 }
