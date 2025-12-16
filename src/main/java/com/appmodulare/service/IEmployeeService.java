@@ -10,6 +10,10 @@ public interface IEmployeeService extends ICRUD<Employee,Integer>{
 
     Employee updatePhoto(Integer id, MultipartFile photo) throws Exception;
 
+    String generateQrCode(Integer employeeId) throws Exception;
+    Employee findByQrCode(String qrCode);
+    Employee findByDniOrQrCode(String identifier);
+
 
 
 

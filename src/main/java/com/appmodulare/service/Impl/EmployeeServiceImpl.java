@@ -35,7 +35,27 @@ public class EmployeeServiceImpl extends CRUDImpl<Employee, Integer> implements 
         return repo;
     }
 
+    @Override
+    public String generateQrCode(Integer employeeId) throws Exception {
+        Employee employee = findById(employeeId);
+        String qrCode = "EMP-" + UUID.randomUUID().toString();
+        employee.setQrCode(qrCode);
+        employee.setQrEnabled(true);
+        repo.save(employee);
+        return qrCode;
+    }
 
+    @Override
+    public Employee findByQrCode(String qrCode) {
+        return repo.findByQrCode(qrCode)
+                .orElseThrow(() -> new RuntimeException("Employee not found with QR: " + qrCode));
+    }
+
+    @Override
+    public Employee findByDniOrQrCode(String identifier) {
+        return repo.findByDniOrQrCode(identifier, identifier)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+    }
     @Override
     public Employee updatePhoto(Integer id, MultipartFile photo) throws Exception {
         // Buscar el empleado
