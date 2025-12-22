@@ -18,14 +18,14 @@ public class AttendanceDTO {
     private String lastName;
 
     // Asistencia
-    private String date;        // LocalDate -> String (yyyy-MM-dd)
-    private String checkIn;     // LocalDateTime -> String
-    private String checkOut;    // LocalDateTime -> String
+    private String date;
+    private String checkIn;
+    private String checkOut;
 
     private Double totalHours;
     private String totalHoursFormatted;
 
-    private String status;      // PUNTUAL / TARDE / FUERA_DE_UBICACION
+    private String status;
 
     // ========== GPS CHECK-IN ==========
     private Double checkInLatitude;
@@ -39,5 +39,5 @@ public class AttendanceDTO {
 
     // ========== VALIDACIÓN ==========
     private Boolean locationValid;
-    private Double distanceFromOffice;  // Distancia en metros
+    private Double distanceFromOffice;
 }

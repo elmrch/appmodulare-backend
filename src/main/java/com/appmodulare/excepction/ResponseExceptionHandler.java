@@ -54,7 +54,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
         CustomErrorRecord err = new CustomErrorRecord(
                 LocalDateTime.now(),
-                msg,                         // <-- AQUÍ va tu mensaje limpio
+                msg,
                 request.getDescription(false)
         );
 

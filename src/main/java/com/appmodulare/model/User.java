@@ -53,7 +53,7 @@ public class User {
    @EqualsAndHashCode.Include
    private Integer idUser;
 
-    @Column(name = "full_name", length = 150) // ✅ AGREGAR
+    @Column(name = "full_name", length = 150)
     private String fullName;
 
     @Column(nullable = false, length = 60, unique = true)
@@ -64,12 +64,12 @@ public class User {
 
     @Column(nullable = false)
     private boolean enabled;
-    @Column(name = "photo_url", length = 255) // ✅ AGREGAR
+    @Column(name = "photo_url", length = 255)
     private String photoUrl;
-    @Column(name = "created_at", updatable = false) // ✅ AGREGAR
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at") // ✅ AGREGAR
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER)

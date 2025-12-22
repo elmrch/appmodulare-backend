@@ -14,6 +14,6 @@ public class AbsenceReportDTO {
     private Integer employeeId;
     private String employeeName;
     private String employeeDni;
-    private LocalDate missingDate;       // Fecha que no marcó
-    private String dayOfWeek;            // Ej: "Lunes", "Martes"
+    private LocalDate missingDate;
+    private String dayOfWeek;
 }

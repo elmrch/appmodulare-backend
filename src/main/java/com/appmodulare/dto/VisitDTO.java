@@ -14,15 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class VisitDTO {
 
-    private Long id;                // null cuando se crea
+    private Long id;
     private String fullName;
     private String dni;
     private String company;
     private String reason;
 
     private LocalDate date;
-    private LocalDateTime checkIn;  // lo genera el backend
-    private LocalDateTime checkOut; // null al inicio
+    private LocalDateTime checkIn;
+    private LocalDateTime checkOut;
 
-    private String status;          // "DENTRO" o "FUERA"
+    private String status;
 }

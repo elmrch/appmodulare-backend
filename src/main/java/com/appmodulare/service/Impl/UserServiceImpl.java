@@ -22,7 +22,7 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements IUserSer
 
     private final IUserRepo repo;
     private final IRoleRepo roleRepo;
-    private final PasswordEncoder passwordEncoder; // ✅ Para encriptar contraseñas
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     protected IGenericRepo<User, Integer> getRepo() {
@@ -32,29 +32,20 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements IUserSer
     @Override
     @Transactional
     public User createUserWithRole(UserRegistrationDTO dto) throws Exception {
-        // Validar que el username no exista
         if (repo.findByUsername(dto.getUsername()).isPresent()) {
             throw new Exception("El username ya existe");
         }
-
-        // Crear nuevo usuario
         User user = new User();
         user.setFullName(dto.getFullName());
         user.setUsername(dto.getUsername());
-
-        // ✅ ENCRIPTAR la contraseña con BCrypt
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         user.setEnabled(dto.getEnabled() != null ? dto.getEnabled() : true);
         user.setPhotoUrl(dto.getPhotoUrl());
-
-        // Asignar rol
         Role role = roleRepo.findById(dto.getRoleId())
                 .orElseThrow(() -> new ModelNotFoundException("Rol no encontrado con ID: " + dto.getRoleId()));
 
         user.setRoles(List.of(role));
-
-        // Guardar usuario
         return repo.save(user);
     }
 
@@ -81,7 +72,6 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements IUserSer
             user.setUsername(dto.getUsername());
         }
 
-        // Solo actualizar password si se proporciona
         if (dto.getPassword() != null && !dto.getPassword().trim().isEmpty()) {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
@@ -94,12 +84,11 @@ public class UserServiceImpl extends CRUDImpl<User, Integer> implements IUserSer
             user.setPhotoUrl(dto.getPhotoUrl());
         }
 
-        // ✅ Ahora esto funcionará porque roles es un ArrayList mutable
         if (dto.getRoleId() != null) {
             Role role = roleRepo.findById(dto.getRoleId())
                     .orElseThrow(() -> new ModelNotFoundException("Rol no encontrado con ID: " + dto.getRoleId()));
 
-            user.getRoles().clear(); // ✅ Funciona porque la lista es mutable
+            user.getRoles().clear();
             user.getRoles().add(role);
         }
 

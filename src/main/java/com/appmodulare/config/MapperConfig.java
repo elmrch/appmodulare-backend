@@ -16,7 +16,7 @@ public class MapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
 
-        // Mapeo DTO → Entity (para crear/actualizar)
+
         modelMapper.addMappings(new PropertyMap<EmployeeDTO, Employee>() {
             @Override
             protected void configure() {
@@ -25,7 +25,7 @@ public class MapperConfig {
             }
         });
 
-        // Mapeo Entity → DTO (para respuestas)
+
         modelMapper.addMappings(new PropertyMap<Employee, EmployeeDTO>() {
             @Override
             protected void configure() {

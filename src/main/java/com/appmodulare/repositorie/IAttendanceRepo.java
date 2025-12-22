@@ -25,7 +25,7 @@ public interface IAttendanceRepo extends IGenericRepo<Attendance,Integer>{
     @Query("SELECT new com.appmodulare.dto.AttendanceReportDTO(" +
             "a.id, " +
             "e.id, " +
-            "CONCAT(e.firstName, ' ', e.lastName), " +  // ✅ CORREGIDO
+            "CONCAT(e.firstName, ' ', e.lastName), " +
             "e.dni, " +
             "a.date, " +
             "a.checkIn, " +

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 public  class ScheduleServiceImpl extends CRUDImpl<Schedule,Integer> implements IScheduleService{
 
     private final IScheduleRepo repo;
-
-
     @Override
     protected IGenericRepo<Schedule, Integer> getRepo() {
         return repo;

@@ -23,7 +23,7 @@ public class SecurityIncident {
     private LocalDateTime dateTime;
 
     @Column(nullable = false)
-    private Severity severity; // ✅ private String severity;
+    private Severity severity;
 
     @Column(nullable = false)
     private String incident;

@@ -64,9 +64,8 @@ private Double checkInLatitude;
     private Boolean locationValid;
 
     @Column(name = "distance_from_office")
-    private Double distanceFromOffice; // Distancia en metros
-    /*hasta aqui*/
-    // Método para calcular distancia GPS (fórmula Haversine)
+    private Double distanceFromOffice;
+
     public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         final int EARTH_RADIUS = 6371000; // metros
 
@@ -82,7 +81,7 @@ private Double checkInLatitude;
         return EARTH_RADIUS * c;
     }
 
-    // Método para validar ubicación (SIN cambiar el status)
+
     public void validateLocation(double officeLat, double officeLon, double maxDistance) {
         if (checkInLatitude != null && checkInLongitude != null) {
             this.distanceFromOffice = calculateDistance(
@@ -91,7 +90,7 @@ private Double checkInLatitude;
             );
             this.locationValid = this.distanceFromOffice <= maxDistance;
 
-            // ❌ ELIMINA ESTA LÍNEA:
+
             // if (!this.locationValid && !"TARDE".equals(this.status)) {
             //     this.status = "FUERA_DE_UBICACION";
             // }
