@@ -31,13 +31,12 @@ public class ReportController {
             @RequestBody ReportFilterDTO filter) {
 
         try {
-            // Obtener datos del reporte
+
             List<AttendanceReportDTO> reportData = reportService.generateAttendanceReport(filter);
 
-            // Obtener estadísticas
             Map<String, Long> statistics = reportService.getReportStatistics(filter);
 
-            // Respuesta completa
+
             Map<String, Object> response = new HashMap<>();
             response.put("data", reportData);
             response.put("statistics", statistics);
@@ -55,7 +54,6 @@ public class ReportController {
 
     /**
      * POST /api/reports/attendance/statistics
-     * Solo obtiene las estadísticas (sin los datos completos)
      */
     @PostMapping("/attendance/statistics")
     public ResponseEntity<Map<String, Object>> getAttendanceStatistics(

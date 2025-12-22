@@ -49,8 +49,6 @@ public class AbsenceServiceImpl implements IAbsenceService {
         }
 
         List<AbsenceReportDTO> absences = new ArrayList<>();
-
-        // Obtener empleados (uno o todos)
         List<Employee> employees;
         if (filter.getEmployeeId() != null) {
             Employee emp = employeeRepo.findById(filter.getEmployeeId())
@@ -59,25 +57,14 @@ public class AbsenceServiceImpl implements IAbsenceService {
         } else {
             employees = employeeRepo.findAll();
         }
-
-        // Por cada empleado
         for (Employee employee : employees) {
-
-            // Recorrer todos los días del rango
             LocalDate currentDate = startDate;
-
             while (!currentDate.isAfter(endDate)) {
-
-                // Saltar domingos (trabajamos Lunes-Sábado)
                 if (currentDate.getDayOfWeek() != DayOfWeek.SUNDAY) {
-
-                    // Verificar si tiene asistencia ese día
                     Attendance attendance = attendanceRepo.findByEmployeeAndDate(
                             employee.getId(),
                             currentDate
                     );
-
-                    // Si NO tiene registro, es una ausencia
                     if (attendance == null) {
                         AbsenceReportDTO absence = new AbsenceReportDTO();
                         absence.setEmployeeId(employee.getId());

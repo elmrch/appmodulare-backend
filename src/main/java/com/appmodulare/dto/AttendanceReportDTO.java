@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AttendanceReportDTO {
     private Integer id;
     private Integer employeeId;
-    private String employeeName;       // firstName + lastName concatenados
+    private String employeeName;
     private String employeeDni;
     private LocalDate date;
     private LocalDateTime checkIn;

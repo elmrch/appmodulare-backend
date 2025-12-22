@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //Clase S7
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity //Importante para la anotacion @PreAuthorize
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 

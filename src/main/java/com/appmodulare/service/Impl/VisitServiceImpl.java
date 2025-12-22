@@ -34,8 +34,6 @@ public class VisitServiceImpl extends CRUDImpl<Visit ,Integer> implements IVisit
 
     @Override
     public Visit registerCheckOut(String dni) throws Exception {
-
-        // Buscar la última visita sin salida
         Visit v = repo.findLastVisitWithoutCheckout(dni)
                 .orElseThrow(() -> new Exception("No existe visita pendiente para este DNI"));
 

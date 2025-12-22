@@ -22,7 +22,6 @@ public class AbsenceController {
 
     /**
      * POST /api/absences
-     * Obtiene lista de ausencias (días sin marcar)
      */
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping

@@ -42,9 +42,9 @@ public class EmployeeController {
     @GetMapping("{id}")
     public ResponseEntity<EmployeeDTO> findById(@PathVariable("id") Integer id) throws Exception {
 
-        Employee employee = service.findById(id);         // recuperas el employee
+        Employee employee = service.findById(id);
 
-        EmployeeDTO dto = convertToDto(employee);         // conviertes employee → dto
+        EmployeeDTO dto = convertToDto(employee);
 
         return ResponseEntity.ok(dto);
     }

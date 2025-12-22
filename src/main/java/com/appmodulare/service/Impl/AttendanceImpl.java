@@ -23,9 +23,6 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
     private final IAttendanceRepo repo;
     private final IEmployeeRepo employeeRepo;
-
-
-    // Coordenadas de tu oficina en Arequipa
     private static final double OFFICE_LAT = -16.386062;
  /*   -16.38633650612929, -71.51364876615429*/
     private static final double OFFICE_LON = -71.513978;
@@ -66,21 +63,13 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
 
         LocalDateTime now = LocalDateTime.now();
         today.setCheckIn(now);
-
-        // ========== GUARDAR GPS ==========
         today.setCheckInLatitude(latitude);
         today.setCheckInLongitude(longitude);
         today.setCheckInLocation(location);
-
-        // ========== VALIDAR UBICACIÓN (SOLO CALCULA DISTANCIA) ==========
         today.validateLocation(OFFICE_LAT, OFFICE_LON, MAX_DISTANCE);
-
-        // ========== PUNTUALIDAD (SIEMPRE SE APLICA) ==========
         LocalTime horaInicio = schedule.getStartTime();
         LocalDateTime horaEntrada = now.toLocalDate().atTime(horaInicio);
         LocalDateTime toleranciaMax = horaEntrada.plusMinutes(15);
-
-        // SOLO EVALÚA PUNTUALIDAD, IGNORA GPS PARA EL STATUS
         if (now.isBefore(toleranciaMax) || now.isEqual(toleranciaMax)) {
             today.setStatus("PUNTUAL");
         } else {
@@ -92,8 +81,6 @@ public class AttendanceImpl extends CRUDImpl<Attendance, Integer> implements IAt
     // ========================== CHECK-OUT =============================
     @Override
     public Attendance registerCheckOut(String identifier, Double latitude, Double longitude, String location) throws Exception {
-
-        // ✅ BUSCAR POR DNI O QR
         Employee emp = employeeRepo.findByDniOrQrCode(identifier, identifier)
                 .orElseThrow(() -> new Exception("Empleado no encontrado con DNI/QR: " + identifier));
 
