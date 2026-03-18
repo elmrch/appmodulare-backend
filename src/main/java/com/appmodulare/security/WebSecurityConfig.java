@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 //Clase S7
 @Configuration
@@ -27,8 +28,9 @@ public class WebSecurityConfig {
         private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
         private final UserDetailsService jwtUserDetailsService;
         private final JwtRequestFilter jwtRequestFilter;
+        private final CorsConfigurationSource corsConfigurationSource;
 
-        @Bean
+    @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
             return authenticationConfiguration.getAuthenticationManager();
         }
@@ -48,7 +50,7 @@ public class WebSecurityConfig {
             // Desde Spring Boot 3.1+
 
             return http
-                    .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                    .cors(cors -> cors.configurationSource(corsConfigurationSource))
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(req -> req
                             .requestMatchers("/login").permitAll()
